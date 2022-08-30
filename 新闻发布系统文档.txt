@@ -1,0 +1,4 @@
+使用cmd 命令行工具下载json-server -g 全局安装
+在文件夹中按住shift 点击右键通过powershell 打开窗口
+输入json-server --watch .\db.json --port 5000
+在vscode中打开就可以
