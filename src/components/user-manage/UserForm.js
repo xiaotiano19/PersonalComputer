@@ -5,7 +5,7 @@ const UserForm = forwardRef((props, ref) => {
     const [isDisabled, setisDisabled] = useState(false)
     useEffect(() => {
         setisDisabled(props.isUpdateDisabled)
-    }, [props.isUpdateDisabled]) //父子传值  当点击编辑超级管理员时，区域栏直接禁用，其他不禁用
+    }, [props.isUpdateDisabled]) //父子传值  当点击编辑超级管理员时,区域栏直接禁用，其他不禁用
     const roleObj = {
         "1": "superadmin",
         "2": "admin",
@@ -107,7 +107,7 @@ const UserForm = forwardRef((props, ref) => {
             >
                 <Select onChange={(value) => {
                     if (value === 1) {
-                        setisDisabled(true)//当点击值为1(超级管理员)时，通过设置setisDisabled将Disisabled状态设置为true不可选状态,同时将区域选项输入栏设置为空。
+                        setisDisabled(true)//当点击值为1(1是超级管理员)时，通过设置setisDisabled将Disisabled状态设置为true不可选状态,同时将区域选项输入栏设置为空。
                         ref.current.setFieldsValue({
                             region: ""
                         })
