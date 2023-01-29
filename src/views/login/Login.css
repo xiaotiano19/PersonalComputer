@@ -1,4 +1,4 @@
-.formContainer {
+.formContent {
     position: fixed;
     background-color: rgba(0, 0, 0, 0.7);
     width: 500px;
@@ -7,11 +7,9 @@
     left: 50%;
     transform: translate(-50%, -50%);
     padding: 20px;
-    z-index: 100;
-
 }
 
-.logintitle {
+.loginTitle {
     text-align: center;
     height: 80px;
     line-height: 80px;

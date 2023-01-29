@@ -1,28 +1,23 @@
 import React from 'react'
-import { Form, Button, Input, message } from 'antd'
-import { UserOutlined, LockOutlined } from '@ant-design/icons'
-import './Login.css'
-import Particles from 'react-particles-js/umd/particles'; //登录界面粒子特效
 import axios from 'axios'
-
-export default function Login(props) {
+import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import { Button, Form, Input, message } from 'antd';
+import Particles from 'react-particles-js/umd/particles'
+import './login.css'
+export default function login(props) {
     const onFinish = (values) => {
-        console.log(values)
-        //roleState=true是用户状态开关 开才能登录
-        axios.get(`/users?username=${values.username}&password=${values.password}&roleState=true&_expand=role`).then(
-            res => {
-                console.log(res.data)
-                if (res.data.length === 0) {
-                    message.error("用户名或密码不正确")
-                } else {
-                    localStorage.setItem("token", JSON.stringify(res.data[0]))
-                    props.history.push("/")
-                }
+        axios.get(`http://localhost:5000/users?username=${values.username}&password=${values.password}&roleState=true&_expand=role`).then(res => {
+            if (res.data.length === 0) {
+                //账号密码错误
+                message.error('用户名或密码错误')
+            } else {
+                localStorage.setItem('token', JSON.stringify(res.data[0]));
+                props.history.push('/');
             }
-        )
-    }
+        })
+    };
     return (
-        <div style={{ background: "rgb(35,39,65)", height: "100%", overflow: "hidden" }}>
+        <div style={{ background: 'rgb(35,39,65)', height: '100vh' }}>
             <Particles height={document.documentElement.clientHeight} params={{
                 "background": {
                     "color": {
@@ -384,8 +379,8 @@ export default function Login(props) {
             }
             }
             />
-            <div className='formContainer'>
-                <div className="logintitle">全球新闻发布管理系统</div>
+            <div className='formContent'>
+                <div className='loginTitle'>全球新闻发布管理系统</div>
                 <Form
                     name="normal_login"
                     className="login-form"
@@ -419,7 +414,7 @@ export default function Login(props) {
                     </Form.Item>
                     <Form.Item>
                         <Button type="primary" htmlType="submit" className="login-form-button">
-                            登录
+                            Log in
                         </Button>
                     </Form.Item>
                 </Form>

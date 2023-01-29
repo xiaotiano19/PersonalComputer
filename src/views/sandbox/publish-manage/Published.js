@@ -1,12 +1,7 @@
-import NewsPublish from '../../../components/publish-manage/NewsPublish'
-import usePublish from '../../../components/publish-manage/usePublish'
-import { Button } from 'antd'
+import React from 'react'
+
 export default function Published() {
-    const { dataSource, handleSunset } = usePublish(2)
-    //2表示的是已发布的
-    return (
-        <div>
-            <NewsPublish dataSource={dataSource} button={(id) => <Button onClick={() => handleSunset(id)}>下线</Button>} ></NewsPublish>
-        </div>
-    )
+  return (
+    <div>Published</div>
+  )
 }
