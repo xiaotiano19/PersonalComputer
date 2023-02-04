@@ -39,13 +39,13 @@ export default function RoleList() {
 
   ];
   useEffect(() => {
-    axios.get('http://localhost:5000/roles')
+    axios.get('/roles')
       .then(res => {
         setDataSource(res.data)
       })
   }, [])
   useEffect(() => {
-    axios.get('http://localhost:5000/rights?_embed=children')
+    axios.get('/rights?_embed=children')
       .then(res => {
         setRightList(res.data)
       })
@@ -60,7 +60,7 @@ export default function RoleList() {
   }
   const deleteMethod = (item) => {
     setDataSource(dataSource.filter(data => item.id !== data.id))
-    axios.delete(`http://localhost:5000/roles/${item.id}`)
+    axios.delete(`/roles/${item.id}`)
   }
   const handleOk = () => {
     setIsModalVisible(false);
@@ -74,7 +74,7 @@ export default function RoleList() {
       return item
     }))
     //patch同步后台
-    axios.patch(`http://localhost:5000/roles/${currentId}`, {
+    axios.patch(`/roles/${currentId}`, {
       rights: currentRights
     })
   }

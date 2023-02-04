@@ -3,8 +3,8 @@ import { Form, Input, Select } from 'antd'
 const UserForm = forwardRef((props, ref) => {
     const [isDisabled, setIsDisabled] = useState(false)
     useEffect(() => {
-        setIsDisabled(props.isUpdataDisabled)
-    }, [props.isUpdataDisabled])
+        setIsDisabled(props.isUpdateDisabled)
+    }, [props.isUpdateDisabled])
     const [form] = Form.useForm();
     const { Option } = Select;
     const roleObj = {

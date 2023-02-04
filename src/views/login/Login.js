@@ -6,7 +6,7 @@ import Particles from 'react-particles-js/umd/particles'
 import './login.css'
 export default function login(props) {
     const onFinish = (values) => {
-        axios.get(`http://localhost:5000/users?username=${values.username}&password=${values.password}&roleState=true&_expand=role`).then(res => {
+        axios.get(`/users?username=${values.username}&password=${values.password}&roleState=true&_expand=role`).then(res => {
             if (res.data.length === 0) {
                 //账号密码错误
                 message.error('用户名或密码错误')

@@ -33,24 +33,41 @@ const LocalRouterMap = {
     "/publish-manage/sunset": Sunset
 }
 export default function NewsRouter() {
-    const [BackRouteList, setBackRouteList] = useState([])
+    const [backRouteList, setBackRouteList] = useState([])
     useEffect(() => {
         Promise.all([
-            axios.get(`http://localhost:5000/rights`),
-            axios.get(`http://localhost:5000/children`)
+            axios.get(`/rights`),
+            axios.get(`/children`)
         ]).then(res => {
-            setBackRouteList([...res[0].data,res[1].data])
+            setBackRouteList([...res[0].data, ...res[1].data])
         })
     }, [])
+    const checkRoute = (item) => {
+        return LocalRouterMap[item.key] && (item.pagepermisson || item.routepermisson)
+    }
+    // 判断当前登录用户权限
+    const { role: { rights } } = JSON.parse(localStorage.getItem("token"))
+    const checkUserPermission = (item) => {
+        return rights.includes(item.key)
+    }
     return (
         <Switch>
-            <Route path='/home' component={Home} />
-            <Route path='/user-manage/list' component={UserList} />
-            <Route path='/right-manage/role/list' component={RoleList} />
-            <Route path='/right-manage/right/list' component={RightList} />
+            {
+                backRouteList.map(item => {
+                    if (checkRoute(item) && checkUserPermission(item)) {
+                        return <Route path={item.key} key={item.key}
+                            component={LocalRouterMap[item.key]} exact
+                        />
+                    }
+                    return null
+                }
+                )
+            }
             <Redirect from='/' to='/home' exact />
-            <Route path='*' component={Nopermission
-            } />
+            {
+                backRouteList.length > 0 && <Route path="*" component={Nopermission} />
+
+            }
         </Switch>
     )
 }

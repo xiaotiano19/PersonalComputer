@@ -5,7 +5,7 @@ import {
 } from '@ant-design/icons';
 import { Layout, Menu } from 'antd';
 import React, { useState, useEffect } from 'react';
-import { withRouter, Link } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 import axios from 'axios'
 import './index.css'
 const { Sider } = Layout;
@@ -19,11 +19,11 @@ const iconList = {
     '/right-manage/right/list': <UserOutlined />
 }
 function SideMenu(props) {
-    const [collapsed, setCollapsed] = useState(false);
+    const [collapsed] = useState(false);
     const [menu, setMenu] = useState([])
     const { role: { rights } } = JSON.parse(localStorage.getItem('token'))
     useEffect(() => {
-        axios.get('http://localhost:5000/rights?_embed=children')
+        axios.get('/rights?_embed=children')
             .then(res => { setMenu(res.data) })
 
     }, [])
@@ -39,8 +39,6 @@ function SideMenu(props) {
                     props.history.push(item.key)
                 }}>{item.title}</Menu.Item>
             }
-
-
         })
     }
     const selectKeys = [props.location.pathname]

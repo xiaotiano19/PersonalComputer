@@ -5,7 +5,7 @@ import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 export default function RightList() {
     const [dataSource, setDataSource] = useState([])
     useEffect(() => {
-        axios.get('http://localhost:5000/rights?_embed=children').then(res => {
+        axios.get('/rights?_embed=children').then(res => {
             const list = res.data;
             list.forEach(item => {
                 if (item.children.length === 0) {
@@ -64,21 +64,21 @@ export default function RightList() {
         item.pagepermisson = item.pagepermisson === 1 ? 0 : 1;
         setDataSource([...dataSource])
         if (item.grade === 1) {
-            axios.patch(`http://localhost:5000/rights/${item.id}`, { pagepermisson: item.pagepermisson })
+            axios.patch(`/rights/${item.id}`, { pagepermisson: item.pagepermisson })
         } else {
-            axios.patch(`http://localhost:5000/children/${item.id}`, { pagepermisson: item.pagepermisson })
+            axios.patch(`/children/${item.id}`, { pagepermisson: item.pagepermisson })
         }
 
     }
     const deleteMethod = (item) => {
         if (item.grade === 1) {
             setDataSource(dataSource.filter(temp => temp.id !== item.id));
-            axios.delete(`http://localhost:5000/rights/${item.id}`)
+            axios.delete(`/rights/${item.id}`)
         } else {
             let list = dataSource.filter(temp => temp.id === item.rightId)
             list[0].children = list[0].children.filter(temp => temp.id !== item.id)
             setDataSource([...dataSource])
-            axios.delete(`http://localhost:5000/children/${item.id}`)
+            axios.delete(`/children/${item.id}`)
         }
 
     }

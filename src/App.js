@@ -5,7 +5,6 @@ export default function App() {
   return (
     <React.Fragment>
       <IndexRouter>
-
       </IndexRouter>
     </React.Fragment>
   )

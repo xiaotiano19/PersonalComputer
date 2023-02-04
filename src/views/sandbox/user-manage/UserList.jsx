@@ -6,13 +6,13 @@ import UserForm from './../../../components/user-manage/UserForm'
 export default function UserList() {
   const [dataSource, setDataSource] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
-  const [isUpdataOpen, setIsUpdataOpen] = useState(false);
+  const [isUpdateOpen, setIsUpdateOpen] = useState(false);
   const [roleList, setRoleList] = useState([]);
   const [regionList, setRegionList] = useState([]);
-  const [isUpdataDisabled, setIsUpdataDisabled] = useState(false);
+  const [isUpdateDisabled, setIsUpdateDisabled] = useState(false);
   const [current, setCurrent] = useState(null);
   const addForm = useRef(null)
-  const updataForm = useRef(null)
+  const updateForm = useRef(null)
   const { roleId, region, username } = JSON.parse(localStorage.getItem('token'))
 
   useEffect(() => {
@@ -21,7 +21,7 @@ export default function UserList() {
       '2': 'admin',
       '3': 'editor'
     }
-    axios.get('http://localhost:5000/users?_expand=role')
+    axios.get('/users?_expand=role')
       .then(res => {
         const list = res.data;
         setDataSource(roleObj[roleId] === "superadmin" ? list : [
@@ -31,13 +31,13 @@ export default function UserList() {
       })
   }, [roleId, region, username])
   useEffect(() => {
-    axios.get('http://localhost:5000/roles')
+    axios.get('/roles')
       .then(res => {
         setRoleList(res.data)
       })
   }, [])
   useEffect(() => {
-    axios.get('http://localhost:5000/regions')
+    axios.get('/regions')
       .then(res => {
         setRegionList(res.data)
       })
@@ -88,7 +88,7 @@ export default function UserList() {
         return (
           <div >
             <Button shape="circle" danger icon={<DeleteOutlined />} disabled={item.default} onClick={() => { confirmMethod(item) }}></Button>
-            <Button shape="circle" type='primary' icon={<EditOutlined />} disabled={item.default} onClick={() => { handleUpdata(item) }}></Button>
+            <Button shape="circle" type='primary' icon={<EditOutlined />} disabled={item.default} onClick={() => { handleUpdate(item) }}></Button>
           </div >)
       }
     },
@@ -97,7 +97,7 @@ export default function UserList() {
   const handleChange = (item) => {
     item.roleState = !item.roleState;
     setDataSource([...dataSource]);
-    axios.patch(`http://localhost:5000/users/${item.id}`, {
+    axios.patch(`/users/${item.id}`, {
       roleState: item.roleState
     })
   }
@@ -113,17 +113,17 @@ export default function UserList() {
   //删除
   const deleteMethod = (item) => {
     setDataSource(dataSource.filter(data => data.id !== item.id))
-    axios.delete(`http://localhost:5000/users/${item.id}`)
+    axios.delete(`/users/${item.id}`)
   }
   //编辑 出现模态框并且有表单选填内容
-  const handleUpdata = async (item) => {
-    await setIsUpdataOpen(true);
+  const handleUpdate = async (item) => {
+    await setIsUpdateOpen(true);
     if (item.roleId === 1) {
-      setIsUpdataDisabled(true);
+      setIsUpdateDisabled(true);
     } else {
-      setIsUpdataDisabled(false)
+      setIsUpdateDisabled(false)
     }
-    updataForm.current.setFieldsValue(item);
+    updateForm.current.setFieldsValue(item);
     setCurrent(item);
   }
   //添加用户
@@ -131,7 +131,7 @@ export default function UserList() {
     addForm.current.validateFields().then(value => {
       setIsOpen(false);
       addForm.current.resetFields()
-      axios.post(`http://localhost:5000/users`, {
+      axios.post(`/users`, {
         ...value,
         "roleState": true,
         "default": false,
@@ -143,9 +143,9 @@ export default function UserList() {
     })
   }
   //更新
-  const updataFormOk = () => {
-    updataForm.current.validateFields().then(value => {
-      setIsUpdataOpen(false);
+  const updateFormOk = () => {
+    updateForm.current.validateFields().then(value => {
+      setIsUpdateOpen(false);
       setDataSource(dataSource.map(item => {
         if (item.id === current.id) {
           return {
@@ -156,8 +156,8 @@ export default function UserList() {
         }
         return item;
       }))
-      setIsUpdataDisabled(!isUpdataDisabled);
-      axios.patch(`http://localhost:5000/users/${current.id}`,
+      setIsUpdateDisabled(!isUpdateDisabled);
+      axios.patch(`/users/${current.id}`,
         value
       )
     }).catch(err => {
@@ -179,17 +179,17 @@ export default function UserList() {
         <UserForm roleList={roleList} regionList={regionList} ref={addForm} />
       </Modal>
       <Modal
-        open={isUpdataOpen}
+        open={isUpdateOpen}
         title="更新用户"
         okText="更新"
         cancelText="取消"
         onCancel={() => {
-          setIsUpdataOpen(false);
-          setIsUpdataDisabled(!isUpdataDisabled);
+          setIsUpdateOpen(false);
+          setIsUpdateDisabled(!isUpdateDisabled);
         }}
-        onOk={updataFormOk}
+        onOk={updateFormOk}
       >
-        <UserForm isUpdate={true} isUpdataDisabled={isUpdataDisabled} roleList={roleList} regionList={regionList} ref={updataForm} />
+        <UserForm isUpdate={true} isUpdateDisabled={isUpdateDisabled} roleList={roleList} regionList={regionList} ref={updateForm} />
       </Modal>
     </div>
   )
