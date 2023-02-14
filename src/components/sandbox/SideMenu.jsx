@@ -7,6 +7,7 @@ import { Layout, Menu } from 'antd';
 import React, { useState, useEffect } from 'react';
 import { withRouter } from 'react-router-dom'
 import axios from 'axios'
+import { connect } from 'react-redux'
 import './index.css'
 const { Sider } = Layout;
 const { SubMenu } = Menu;
@@ -19,7 +20,6 @@ const iconList = {
     '/right-manage/right/list': <UserOutlined />
 }
 function SideMenu(props) {
-    const [collapsed] = useState(false);
     const [menu, setMenu] = useState([])
     const { role: { rights } } = JSON.parse(localStorage.getItem('token'))
     useEffect(() => {
@@ -45,7 +45,7 @@ function SideMenu(props) {
     const openKeys = ['/' + props.location.pathname.split('/')[1]]
     return (
 
-        <Sider trigger={null} collapsible collapsed={collapsed}>
+        <Sider trigger={null} collapsible collapsed={props.isCollapsed}>
             <div style={{ display: 'flex', height: '100vh', flexDirection: 'column' }}>
                 <div className="logo" >全球新闻发布管理系统</div>
                 <div style={{ flex: 1, overflow: 'auto' }}>
@@ -62,4 +62,9 @@ function SideMenu(props) {
         </Sider>
     )
 }
-export default withRouter(SideMenu)
+const mapStateToProps = ({ CollapsedReducer: { isCollapsed } }) => {
+    return {
+        isCollapsed
+    }
+}
+export default connect(mapStateToProps)(withRouter(SideMenu))

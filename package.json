@@ -11,7 +11,7 @@
     "axios": "^0.27.2",
     "draft-js": "^0.11.7",
     "draftjs-to-html": "^0.9.1",
-    "echarts": "^5.3.3",
+    "echarts": "^5.4.1",
     "html-to-draftjs": "^1.5.0",
     "moment": "^2.29.4",
     "nprogress": "^0.2.0",
@@ -52,6 +52,7 @@
     ]
   },
   "devDependencies": {
-    "http-proxy-middleware": "^2.0.6"
+    "http-proxy-middleware": "^2.0.6",
+    "redux-devtools-extension": "^2.13.9"
   }
 }
